@@ -38,13 +38,24 @@ public class HookScript : MonoBehaviour
                 itemAttached = false;
                 Transform obj = itemHolder.GetChild(0);
                 if(obj.tag == "SmallGold" || obj.tag == "MiddleGold" || obj.tag == "LargeGold"){
-                    playerAnimations.LaughAnimations();
+                    StartCoroutine("Wait" , true);
+                }
+                else{
+                    StartCoroutine("Wait" , false);
                 }
                 obj.parent = null;
                 obj.gameObject.SetActive(false);
-                playerAnimations.IdleAnimations();
                 SoundManager.instance.PullSound(false);
             }
         }
+    }
+
+    IEnumerator Wait(bool isGold){
+        if(isGold)
+            playerAnimations.LaughAnimations();
+        else
+            playerAnimations.IdleAnimations();
+        yield return new WaitForSeconds(0.4f);
+        playerAnimations.IdleAnimations();
     }
 }
